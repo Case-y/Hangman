@@ -1,14 +1,24 @@
 //
-//  GameViewController.swift
+//  HangmanViewController.swift
 //  Hangman
-//
-//  Created by Shawn D'Souza on 3/3/16.
-//  Copyright © 2016 Shawn D'Souza. All rights reserved.
 //
 
 import UIKit
 
 class HangmanViewController: UIViewController {
+    
+    // The 'Character' Pressed to indicate what character
+    // the user guessed so far.
+    private static let alphabet = ["A", "B", "C", "D", "E",
+         "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q",
+            "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
+    
+    
+    // Current Guess:
+    var guess: String = ""
+    let currentGuessLabel = "Current Guess : "
+    @IBOutlet weak var currentGuess: UILabel!
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,7 +33,6 @@ class HangmanViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
 
     /*
     // MARK: - Navigation
@@ -34,5 +43,21 @@ class HangmanViewController: UIViewController {
         // Pass the selected object to the new view controller.
     }
     */
+    
+    
+    @IBAction func alphabetPressed(_ sender: Any) {
+        let charc = HangmanViewController.alphabet[Int((sender as AnyObject).tag)]
+        self.guess = charc
+        currentGuess.text = currentGuessLabel + charc;
+    }
+    
+    
+    
+    // Exit back to menu
+    @IBAction func exitToMain(_ sender: Any) {
+        performSegue(withIdentifier: "menu", sender: self)
+    }
+    
+    
 
 }

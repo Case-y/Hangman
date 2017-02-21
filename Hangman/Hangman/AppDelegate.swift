@@ -13,7 +13,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-
+    func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
+        return UIInterfaceOrientationMask(rawValue: UInt(checkOrientation(viewController: self.window?.rootViewController)))
+    }
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         return true
@@ -41,6 +44,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
 
+    func checkOrientation(viewController:UIViewController?)-> Int{
+        
+        if(viewController == nil){
+            
+            return Int(UIInterfaceOrientationMask.all.rawValue)//All means all orientation
+            
+        } else {
+            
+            return Int(UIInterfaceOrientationMask.portrait.rawValue)
+            
+        }
+    }
 
 }
 
