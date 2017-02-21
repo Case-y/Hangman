@@ -9,11 +9,6 @@ class MenuViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        let hangmanPhrases = HangmanPhrases()
-        // Generate a random phrase for the user to guess
-        let phrase: String = hangmanPhrases.getRandomPhrase()
-        print(phrase)
     }
     
     override func didReceiveMemoryWarning() {
@@ -35,9 +30,6 @@ class MenuViewController: UIViewController {
         performSegue(withIdentifier: "play", sender: self)
     }
     
-    @IBAction func stats(_ sender: Any) {
-        performSegue(withIdentifier: "stats", sender: self)
-    }
     
     
 }
