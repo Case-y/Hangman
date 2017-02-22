@@ -13,9 +13,6 @@ class HangmanViewController: UIViewController {
          "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q",
             "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
     
-    // Boolean to keep the game going
-    var finished: Bool = false
-    
     // Word to Guess!
     var phraseLabel: String = ""
     var phraseArray: [String] = []
@@ -33,6 +30,16 @@ class HangmanViewController: UIViewController {
     var guess: String = "A"
     let currentGuessLabel = "Current Guess : "
     @IBOutlet weak var currentGuess: UILabel!
+    
+    
+    @IBAction func cheatWord(_ sender: Any) {
+        
+        let alert = UIAlertController(title: "Don't cheat!", message: "You can solve this! Just kidding, the word is " + phraseLabel, preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "Okay, I can do this!", style: UIAlertActionStyle.default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
+        
+    }
+    
     
     
     // Incorrect Guesses:
@@ -67,7 +74,7 @@ class HangmanViewController: UIViewController {
         let hangmanPhrases = HangmanPhrases()
         // Generate a random phrase for the user to guess
         self.phraseLabel = hangmanPhrases.getRandomPhrase()
-        print(self.phraseLabel)
+//        print(self.phraseLabel)
         
         // Generate incorrect
         self.incorrect = 0
@@ -101,8 +108,6 @@ class HangmanViewController: UIViewController {
         let displayRepresentation = displayArray.joined(separator: " ")
         phrase.text = displayRepresentation
         
-        // Set game state
-        finished = false;
     }
     
     func validateCorrectness() {
@@ -126,11 +131,11 @@ class HangmanViewController: UIViewController {
             phrase.text = displayRepresentation
             
             if (correctGuesses == correctNumToGuess) {
-                let alert = UIAlertController(title: "Horray!", message: "You solved this word's Hangman!", preferredStyle: UIAlertControllerStyle.alert)
+                let alert = UIAlertController(title: "Horray!", message: "You solved this word's Hangman! The word was " + phraseLabel + ".", preferredStyle: UIAlertControllerStyle.alert)
                 alert.addAction(UIAlertAction(title: "Okay, I'm happy haha!", style: UIAlertActionStyle.default, handler: nil))
                 self.present(alert, animated: true, completion: nil)
                 
-                finished = true
+                gameSetAndReady()
             }
             
         } else {
@@ -146,26 +151,19 @@ class HangmanViewController: UIViewController {
             
             // Six times to be wrong :P
             if (incorrect == 6) {
-                let alert = UIAlertController(title: "Noooo!", message: "You've been hanged! :(", preferredStyle: UIAlertControllerStyle.alert)
+                let alert = UIAlertController(title: "Noooo!", message: "You've been hanged! The word was " + phraseLabel + ". :(", preferredStyle: UIAlertControllerStyle.alert)
                 alert.addAction(UIAlertAction(title: "Okay, I'm try again by clicking startover!", style: UIAlertActionStyle.default, handler: nil))
                 self.present(alert, animated: true, completion: nil)
                 
-                finished = true
+                let displayRepresentation = phraseArray.joined(separator: " ")
+                phrase.text = displayRepresentation
+                
+                gameSetAndReady()
             }
         }
     }
     
     @IBAction func userGuessed(_ sender: Any) {
-        
-        // Start Over Please :D
-        if (finished) {
-            let alert = UIAlertController(title: "Woaaaah!", message: "The game finished!", preferredStyle: UIAlertControllerStyle.alert)
-            alert.addAction(UIAlertAction(title: "Okay, I'm play again?!", style: UIAlertActionStyle.default, handler: nil))
-            self.present(alert, animated: true, completion: nil)
-            gameSetAndReady()
-            return;
-        }
-        
         
         // Did user pressed this before?
         if !self.lettersGuessed.contains(self.guess) {

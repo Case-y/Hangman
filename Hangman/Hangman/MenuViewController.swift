@@ -30,6 +30,12 @@ class MenuViewController: UIViewController {
         performSegue(withIdentifier: "play", sender: self)
     }
     
+    @IBAction func wassup(_ sender: Any) {
+        let alert = UIAlertController(title: "Hey this is an alert!", message: "Casey Takeda made this Hangman App in the iOS Decal.", preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "Okay, cool! :(", style: UIAlertActionStyle.default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
+        
+    }
     
     
 }
