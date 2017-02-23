@@ -97,14 +97,16 @@ class HangmanViewController: UIViewController {
         displayArray = []
         
         phraseArray = self.phraseLabel.characters.map { String($0) }
-        for char in phraseArray {
-            if (char == " ") {
+        for c in phraseArray.indices {
+            if (phraseArray[c] == " ") {
                 displayArray.append("\n")
+                phraseArray[c] = "\n"
             } else {
                 displayArray.append("_")
-                lettersContained.insert(char)
+                lettersContained.insert(phraseArray[c])
             }
         }
+        
         
         // Set number of times to guess correct
         correctGuesses = 0
@@ -163,6 +165,7 @@ class HangmanViewController: UIViewController {
                 self.present(alert, animated: true, completion: nil)
                 
                 let displayRepresentation = phraseArray.joined(separator: " ")
+                
                 phrase.text = displayRepresentation
                 
                 // User needs to press startover.
