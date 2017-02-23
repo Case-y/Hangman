@@ -10,8 +10,8 @@ class HangmanViewController: UIViewController {
     // The 'Character' Pressed to indicate what character
     // the user guessed so far.
     private static let alphabet = ["A", "B", "C", "D", "E",
-         "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q",
-            "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
+                                   "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q",
+                                   "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
     
     // Word to Guess!
     var phraseLabel: String = ""
@@ -32,6 +32,9 @@ class HangmanViewController: UIViewController {
     @IBOutlet weak var currentGuess: UILabel!
     
     
+    // Game State
+    var finished: Bool = false
+    
     @IBAction func cheatWord(_ sender: Any) {
         
         let alert = UIAlertController(title: "Don't cheat!", message: "You can solve this! Just kidding, the word is " + phraseLabel, preferredStyle: UIAlertControllerStyle.alert)
@@ -46,35 +49,35 @@ class HangmanViewController: UIViewController {
     var incorrect: Int = 0
     let incorrectGuessesLabel = "Incorrect Guesses : "
     @IBOutlet weak var incorrectGuesses: UILabel!
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         gameSetAndReady()
     }
     
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
+    
     /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
+     // MARK: - Navigation
+     
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+     // Get the new view controller using segue.destinationViewController.
+     // Pass the selected object to the new view controller.
+     }
+     */
     
     // Set up the game!
     func gameSetAndReady() {
         let hangmanPhrases = HangmanPhrases()
         // Generate a random phrase for the user to guess
         self.phraseLabel = hangmanPhrases.getRandomPhrase()
-//        print(self.phraseLabel)
+        //        print(self.phraseLabel)
         
         // Generate incorrect
         self.incorrect = 0
@@ -109,6 +112,7 @@ class HangmanViewController: UIViewController {
         let displayRepresentation = displayArray.joined(separator: " ")
         phrase.text = displayRepresentation
         
+        finished = false
     }
     
     func validateCorrectness() {
@@ -136,7 +140,9 @@ class HangmanViewController: UIViewController {
                 alert.addAction(UIAlertAction(title: "Okay, I'm happy haha!", style: UIAlertActionStyle.default, handler: nil))
                 self.present(alert, animated: true, completion: nil)
                 
-                gameSetAndReady()
+                // User needs to press start over
+                finished = true
+                //                gameSetAndReady()
             }
             
         } else {
@@ -159,12 +165,20 @@ class HangmanViewController: UIViewController {
                 let displayRepresentation = phraseArray.joined(separator: " ")
                 phrase.text = displayRepresentation
                 
-                gameSetAndReady()
+                // User needs to press startover.
+                finished = true
             }
         }
     }
     
     @IBAction func userGuessed(_ sender: Any) {
+        if (finished) {
+            let alert = UIAlertController(title: "Whoops!", message: "Press startover!", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "Okay, I'm sorry haha!", style: UIAlertActionStyle.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+            
+            return;
+        }
         
         // Did user pressed this before?
         if !self.lettersGuessed.contains(self.guess) {
@@ -201,5 +215,5 @@ class HangmanViewController: UIViewController {
     }
     
     
-
+    
 }
