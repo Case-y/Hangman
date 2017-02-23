@@ -96,7 +96,7 @@ class HangmanViewController: UIViewController {
         phraseArray = self.phraseLabel.characters.map { String($0) }
         for char in phraseArray {
             if (char == " ") {
-                displayArray.append(" ")
+                displayArray.append("\n")
             } else {
                 displayArray.append("_")
                 lettersContained.insert(char)
@@ -104,6 +104,7 @@ class HangmanViewController: UIViewController {
         }
         
         // Set number of times to guess correct
+        correctGuesses = 0
         correctNumToGuess = lettersContained.count
         let displayRepresentation = displayArray.joined(separator: " ")
         phrase.text = displayRepresentation
